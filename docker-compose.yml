@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+  database:
+    image: mariadb
+    restart: unless-stopped
+    environment:
+      - MARIADB_ROOT_PASSWORD=54uxhZe99yqf4f3%47XbDY#C2%@UWLygfHtdRZdnbAqUfmj^FG%bnssL^2sAD3hLyaR8@pLvn9j%ir93i%Zwo7E5^j^sYtc5*oJAvLm3*DR969eKX@vGgVRK7Bh@e#T*
+      - MARIADB_DATABASE=digichoice
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mariadb-database:/var/lib/mysql
+    healthcheck:
+      # Check if database is up and ready for connection, before proceeding
+      test: ["CMD-SHELL", 'mariadb --database=$$MARIADB_DATABASE --password=$$MARIADB_ROOT_PASSWORD --execute="SELECT count(table_name) > 0 FROM information_schema.tables;" --skip-column-names -B']
+      interval: 10s
+      timeout: 10s
+      retries: 4
+      start_period: 5s
+  keycloak:
+    image: quay.io/keycloak/keycloak:21.1.1
+    ports:
+      - 8080:8080
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    volumes:
+      - ./keycloak:/opt/keycloak/data/
+    restart: unless-stopped
+    command:
+      - "start-dev"
