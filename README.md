@@ -9,3 +9,5 @@ I also did research into keeping the data as anonymous as possible.
 Frontend is written in React.js (Typescript) it also uses Mantine.dev for the UI.
 
 Backend is written in ASP.NET 7 (Web Api) and uses MariaDB.
+
+## It doesn't stick to much design concepts and should not be taken as example, I was in a time rush so I only sticked to simple concepts.
